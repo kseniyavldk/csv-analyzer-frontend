@@ -1,0 +1,30 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  font-family: 'Inter', sans-serif;
+  color: #333;
+  background: #fafafa;
+  min-height: 100vh;
+}
+
+nav {
+  margin-bottom: 2rem;
+
+  a {
+    color: #1976d2;
+    text-decoration: none;
+    margin: 0 0.5rem;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &.active {
+      color: #0d47a1;
+      border-bottom: 2px solid #0d47a1;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+<h2>Загрузка CSV файла</h2>
+
+<input type="file" (change)="onFileSelected($event)" />
+<button (click)="upload()">Загрузить CSV</button>
+
+<!-- Ошибка -->
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+<!-- Красивый вывод статистики -->
+<div *ngIf="stats" class="stats-card">
+  <h3>Статистика загруженного файла</h3>
+  <table>
+    <tr><td>Всего строк:</td><td>{{ stats.totalLines }}</td></tr>
+    <tr><td>Неверные строки:</td><td>{{ stats.invalidLines }}</td></tr>
+    <tr><td>Минимум:</td><td>{{ stats.min }}</td></tr>
+    <tr><td>Максимум:</td><td>{{ stats.max }}</td></tr>
+    <tr><td>Среднее:</td><td>{{ stats.mean }}</td></tr>
+    <tr><td>Стандартное отклонение:</td><td>{{ stats.stdDev | number:'1.2-2' }}</td></tr>
+    <tr><td>Уникальные значения:</td><td>{{ stats.uniqueValues }}</td></tr>
+  </table>
+</div>
