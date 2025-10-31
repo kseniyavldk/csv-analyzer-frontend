@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AppComponent } from '../app/app.component';
 import { UploadComponent } from './components/upload/upload.component';
-import { HistoryComponent } from './components/history/history.component';
+import { UploadHistoryComponent } from './components/upload-history/upload-history.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'upload', pathMatch: 'full' },
+  { path: '', component: AppComponent },
   { path: 'upload', component: UploadComponent },
-  { path: 'history', component: HistoryComponent },
-   { path: '**', redirectTo: 'upload' } 
+  { path: 'history', component: UploadHistoryComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

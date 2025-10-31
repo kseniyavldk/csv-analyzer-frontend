@@ -10,6 +10,7 @@ interface CsvStatistics {
   mean: number;
   stdDev: number;
   uniqueValues: number;
+  invalidLinesDetails?: string[];
 }
 
 @Component({

@@ -3,13 +3,13 @@ import { AppComponent } from './app/app.component';
 import { provideRouter, Routes } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { UploadComponent } from './app/components/upload/upload.component';
-import { HistoryComponent } from './app/components/history/history.component';
+import { UploadHistoryComponent } from './app/components/upload-history/upload-history.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'upload', pathMatch: 'full' },
+  { path: '', component: AppComponent },
   { path: 'upload', component: UploadComponent },
-  { path: 'history', component: HistoryComponent },
-  { path: '**', redirectTo: 'upload' }
+  { path: 'history', component: UploadHistoryComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 bootstrapApplication(AppComponent, {

@@ -1,0 +1,29 @@
+.history-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.error {
+  color: #d32f2f;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.empty {
+  text-align: center;
+  color: #777;
+  margin-top: 1rem;
+}

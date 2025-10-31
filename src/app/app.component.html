@@ -1,9 +1,10 @@
-<main>
-  <nav>
-  <a routerLink="/upload">Upload</a> |
-  <a routerLink="/history">History</a>
-</nav>
+<mat-toolbar color="primary">
+  <span>{{ title() }}</span>
+  <span class="spacer"></span>
+  <a mat-button routerLink="/upload">Загрузить CSV</a>
+  <a mat-button routerLink="/history">История анализов</a>
+</mat-toolbar>
 
-<router-outlet></router-outlet>
-
+<main class="main-content">
+  <router-outlet></router-outlet>
 </main>

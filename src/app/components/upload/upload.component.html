@@ -1,21 +1,38 @@
-<h2>Загрузка CSV файла</h2>
+<div class="upload-container">
+  <h2>Загрузка CSV файла</h2>
 
-<input type="file" (change)="onFileSelected($event)" />
-<button (click)="upload()">Загрузить CSV</button>
+  <input type="file" (change)="onFileSelected($event)" />
+  <button (click)="upload()" [disabled]="!selectedFile">Загрузить CSV</button>
 
-<!-- Ошибка -->
-<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  }
 
-<!-- Красивый вывод статистики -->
-<div *ngIf="stats" class="stats-card">
-  <h3>Статистика загруженного файла</h3>
-  <table>
-    <tr><td>Всего строк:</td><td>{{ stats.totalLines }}</td></tr>
-    <tr><td>Неверные строки:</td><td>{{ stats.invalidLines }}</td></tr>
-    <tr><td>Минимум:</td><td>{{ stats.min }}</td></tr>
-    <tr><td>Максимум:</td><td>{{ stats.max }}</td></tr>
-    <tr><td>Среднее:</td><td>{{ stats.mean }}</td></tr>
-    <tr><td>Стандартное отклонение:</td><td>{{ stats.stdDev | number:'1.2-2' }}</td></tr>
-    <tr><td>Уникальные значения:</td><td>{{ stats.uniqueValues }}</td></tr>
-  </table>
+  @if (stats) {
+    <div class="stats-container">
+      <h3>Статистика файла</h3>
+      <ul>
+        <li><strong>Всего строк:</strong> {{ stats.totalLines }}</li>
+        <li><strong>Неверные строки:</strong> {{ stats.invalidLines }}</li>
+        <li><strong>Минимум:</strong> {{ stats.min }}</li>
+        <li><strong>Максимум:</strong> {{ stats.max }}</li>
+        <li><strong>Среднее:</strong> {{ stats.mean | number:'1.2-2' }}</li>
+        <li><strong>Стандартное отклонение:</strong> {{ stats.stdDev | number:'1.2-2' }}</li>
+        <li><strong>Уникальные значения:</strong> {{ stats.uniqueValues }}</li>
+      </ul>
+
+      @if (stats.invalidLinesDetails?.length) {
+        <div class="invalid-lines">
+          <h4>Детали неверных строк</h4>
+          <ul>
+            @for (line of stats.invalidLinesDetails; track $index) {
+              <li>{{ line }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  }
 </div>
