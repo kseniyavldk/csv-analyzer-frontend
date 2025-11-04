@@ -1,0 +1,29 @@
+.upload-detail {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  max-width: 400px;
+  background-color: #f9f9f9;
+
+  h2 {
+    margin-bottom: 12px;
+    font-size: 20px;
+    color: #333;
+  }
+
+  .detail-row {
+    display: flex;
+    margin-bottom: 8px;
+
+    .label {
+      font-weight: bold;
+      width: 100px;
+      color: #555;
+    }
+
+    .value {
+      color: #000;
+    }
+  }
+}

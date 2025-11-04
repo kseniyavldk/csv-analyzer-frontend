@@ -2,11 +2,12 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { provideRouter, Routes } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
+import { HomeComponent } from './app/components/home/home.component';
 import { UploadComponent } from './app/components/upload/upload.component';
 import { UploadHistoryComponent } from './app/components/upload-history/upload-history.component';
 
 const routes: Routes = [
-  { path: '', component: AppComponent },
+  { path: '', component: HomeComponent },
   { path: 'upload', component: UploadComponent },
   { path: 'history', component: UploadHistoryComponent },
   { path: '**', redirectTo: '' }

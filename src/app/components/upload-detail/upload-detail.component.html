@@ -1,0 +1,15 @@
+<div class="upload-detail" *ngIf="record; else noRecord">
+  <h2>Детали записи #{{ record.id }}</h2>
+  <div class="detail-row">
+    <span class="label">Timestamp:</span>
+    <span class="value">{{ record.timestamp }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="label">Value:</span>
+    <span class="value">{{ record.value }}</span>
+  </div>
+</div>
+
+<ng-template #noRecord>
+  <p>Выберите запись для отображения деталей</p>
+</ng-template>

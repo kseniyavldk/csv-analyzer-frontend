@@ -1,29 +1,25 @@
 <div class="history-container">
   <h2>История загрузок</h2>
 
-  @if (loading) {
-    <div class="spinner-container">
-      <mat-spinner diameter="40"></mat-spinner>
-    </div>
-  }
+  <div *ngIf="loading" class="spinner-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
 
-  @if (errorMessage) {
-    <div class="error">{{ errorMessage }}</div>
-  }
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-  @if (!loading && dataSource.length > 0) {
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <div *ngIf="!loading && dataSource.length > 0">
+    <table mat-table [dataSource]="pagedData" class="mat-elevation-z8">
 
       <ng-container matColumnDef="filename">
         <th mat-header-cell *matHeaderCellDef>Файл</th>
-        <td mat-cell *matCellDef="let item">{{ item.filename }}</td>
+        <td mat-cell *matCellDef="let item" (click)="openDetails(item.id)" style="cursor:pointer">
+          {{ item.fileName }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="processedAt">
         <th mat-header-cell *matHeaderCellDef>Дата</th>
-        <td mat-cell *matCellDef="let item">
-          {{ item.processedAt | date:'dd.MM.yyyy HH:mm' }}
-        </td>
+        <td mat-cell *matCellDef="let item">{{ item.processedAt | date:'dd.MM.yyyy HH:mm' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="totalLines">
@@ -39,10 +35,6 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Действия</th>
         <td mat-cell *matCellDef="let item">
-          <button mat-icon-button color="primary" matTooltip="Детали">
-            <mat-icon>info</mat-icon>
-          </button>
-
           <button mat-icon-button color="warn" matTooltip="Удалить" (click)="deleteFile(item.id)">
             <mat-icon>delete</mat-icon>
           </button>
@@ -53,7 +45,13 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
     </table>
-  } @else if (!loading && dataSource.length === 0) {
-    <p class="empty">Нет загруженных файлов</p>
-  }
+
+    <div class="paginator">
+      <button (click)="prevPage()" [disabled]="currentPage===0">◀ Назад</button>
+      <span>Страница {{ currentPage + 1 }} из {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage>=totalPages-1">Вперед ▶</button>
+    </div>
+  </div>
+
+  <p *ngIf="!loading && dataSource.length===0" class="empty">Нет загруженных файлов</p>
 </div>

@@ -1,29 +1,40 @@
 .history-container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1rem;
-}
+  padding: 16px;
 
-.spinner-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-}
+  h2 {
+    margin-bottom: 16px;
+  }
 
-.error {
-  color: #d32f2f;
-  margin: 1rem 0;
-  text-align: center;
-}
+  .spinner-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
 
-table {
-  width: 100%;
-  border-radius: 8px;
-  overflow: hidden;
-}
+  table {
+    width: 100%;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
 
-.empty {
-  text-align: center;
-  color: #777;
-  margin-top: 1rem;
+  .paginator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+
+    button {
+      padding: 4px 8px;
+    }
+  }
+
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+
+  .empty {
+    font-style: italic;
+  }
 }
