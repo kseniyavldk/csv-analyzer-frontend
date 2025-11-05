@@ -10,36 +10,41 @@
   <div *ngIf="!loading && dataSource.length > 0">
     <table mat-table [dataSource]="pagedData" class="mat-elevation-z8">
 
-      <ng-container matColumnDef="filename">
-        <th mat-header-cell *matHeaderCellDef>Файл</th>
-        <td mat-cell *matCellDef="let item" (click)="openDetails(item.id)" style="cursor:pointer">
-          {{ item.fileName }}
-        </td>
-      </ng-container>
+     <ng-container matColumnDef="fileName">
+  <th mat-header-cell *matHeaderCellDef>Файл</th>
+  <td mat-cell *matCellDef="let item" (click)="openDetails(item)" style="cursor:pointer">
+    {{ item.fileName }}
+  </td>
+</ng-container>
 
-      <ng-container matColumnDef="processedAt">
-        <th mat-header-cell *matHeaderCellDef>Дата</th>
-        <td mat-cell *matCellDef="let item">{{ item.processedAt | date:'dd.MM.yyyy HH:mm' }}</td>
-      </ng-container>
+<ng-container matColumnDef="fileSize">
+  <th mat-header-cell *matHeaderCellDef>Размер</th>
+  <td mat-cell *matCellDef="let item">{{ item.fileSize }}</td>
+</ng-container>
 
-      <ng-container matColumnDef="totalLines">
-        <th mat-header-cell *matHeaderCellDef>Всего строк</th>
-        <td mat-cell *matCellDef="let item">{{ item.totalLines }}</td>
-      </ng-container>
+<ng-container matColumnDef="processedAt">
+  <th mat-header-cell *matHeaderCellDef>Дата</th>
+  <td mat-cell *matCellDef="let item">{{ item.processedAt | date:'dd.MM.yyyy HH:mm' }}</td>
+</ng-container>
 
-      <ng-container matColumnDef="invalidLines">
-        <th mat-header-cell *matHeaderCellDef>Ошибочных</th>
-        <td mat-cell *matCellDef="let item">{{ item.invalidLines }}</td>
-      </ng-container>
+<ng-container matColumnDef="mean">
+  <th mat-header-cell *matHeaderCellDef>Среднее</th>
+  <td mat-cell *matCellDef="let item">{{ item.mean }}</td>
+</ng-container>
 
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Действия</th>
-        <td mat-cell *matCellDef="let item">
-          <button mat-icon-button color="warn" matTooltip="Удалить" (click)="deleteFile(item.id)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
+<ng-container matColumnDef="stdDev">
+  <th mat-header-cell *matHeaderCellDef>Стандартное отклонение</th>
+  <td mat-cell *matCellDef="let item">{{ item.stdDev }}</td>
+</ng-container>
+
+<ng-container matColumnDef="actions">
+  <th mat-header-cell *matHeaderCellDef>Действия</th>
+  <td mat-cell *matCellDef="let item">
+    <button mat-icon-button color="warn" matTooltip="Удалить" (click)="deleteFile(item.id)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </td>
+</ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
@@ -55,3 +60,6 @@
 
   <p *ngIf="!loading && dataSource.length===0" class="empty">Нет загруженных файлов</p>
 </div>
+
+<!-- Детали записи -->
+<app-upload-detail [record]="selectedRecord"></app-upload-detail>

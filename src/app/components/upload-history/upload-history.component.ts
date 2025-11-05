@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { CsvAnalysisRecord, UploadDetailComponent } from '../upload-detail/upload-detail.component';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { DatePipe } from '@angular/common';
-import { UploadDetailComponent, UploadRecord  } from '../upload-detail/upload-detail.component';
-
 
 @Component({
   selector: 'app-upload-history',
@@ -21,16 +18,15 @@ import { UploadDetailComponent, UploadRecord  } from '../upload-detail/upload-de
     MatButtonModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
-    DatePipe,
     UploadDetailComponent
   ],
   templateUrl: './upload-history.component.html',
   styleUrls: ['./upload-history.component.scss']
 })
 export class UploadHistoryComponent implements OnInit {
-  displayedColumns: string[] = ['filename', 'processedAt', 'totalLines', 'invalidLines', 'actions'];
-  dataSource: any[] = [];
-  pagedData: any[] = [];
+  displayedColumns = ['fileName', 'fileSize', 'processedAt', 'mean', 'stdDev', 'actions'];
+  dataSource: CsvAnalysisRecord[] = [];
+  pagedData: CsvAnalysisRecord[] = [];
   loading = false;
   errorMessage = '';
 
@@ -38,9 +34,9 @@ export class UploadHistoryComponent implements OnInit {
   pageSize = 5;
   totalPages = 0;
 
-  selectedRecord: UploadRecord | null = null;
+  selectedRecord: CsvAnalysisRecord | null = null;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.loadHistory();
@@ -48,7 +44,7 @@ export class UploadHistoryComponent implements OnInit {
 
   loadHistory() {
     this.loading = true;
-    this.http.get<any[]>('http://localhost:8080/api/history').subscribe({
+    this.http.get<CsvAnalysisRecord[]>('http://localhost:8080/api/history').subscribe({
       next: (data) => {
         this.dataSource = data;
         this.totalPages = Math.ceil(this.dataSource.length / this.pageSize);
@@ -81,15 +77,8 @@ export class UploadHistoryComponent implements OnInit {
     }
   }
 
- openDetails(id: number) {
-    const record = this.dataSource.find(item => item.id === id);
-    if (record) {
-      this.selectedRecord = {
-        id: record.id,
-        timestamp: record.timestamp ?? record.processedAt,
-        value: record.value ?? 0
-      };
-    }
+  openDetails(record: CsvAnalysisRecord) {
+    this.selectedRecord = record;
   }
 
   deleteFile(id: number) {
@@ -100,7 +89,7 @@ export class UploadHistoryComponent implements OnInit {
         this.totalPages = Math.ceil(this.dataSource.length / this.pageSize);
         if (this.currentPage >= this.totalPages) this.currentPage = this.totalPages - 1;
         this.updatePagedData();
-         if (this.selectedRecord?.id === id) this.selectedRecord = null; 
+        if (this.selectedRecord?.id === id) this.selectedRecord = null;
       },
       error: () => {
         this.errorMessage = 'Ошибка при удалении файла';
