@@ -1,15 +1,16 @@
-<div class="upload-detail" *ngIf="record; else noRecord">
-  <h2>Детали записи #{{ record.id }}</h2>
-  <div class="detail-row">
-    <span class="label">Timestamp:</span>
-    <span class="value">{{ record.timestamp }}</span>
-  </div>
-  <div class="detail-row">
-    <span class="label">Value:</span>
-    <span class="value">{{ record.value }}</span>
-  </div>
+<div class="upload-detail" *ngIf="record$ | async as record; else noRecord">
+  <h2>Детали файла: {{ record.fileName }}</h2>
+  <div class="detail-row"><strong>Размер:</strong> {{ record.fileSize }} байт</div>
+  <div class="detail-row"><strong>Дата анализа:</strong> {{ record.processedAt | date:'dd.MM.yyyy HH:mm' }}</div>
+  <div class="detail-row"><strong>Всего строк:</strong> {{ record.totalLines }}</div>
+  <div class="detail-row"><strong>Ошибочных:</strong> {{ record.invalidLines }}</div>
+  <div class="detail-row"><strong>Минимум:</strong> {{ record.min }}</div>
+  <div class="detail-row"><strong>Максимум:</strong> {{ record.max }}</div>
+  <div class="detail-row"><strong>Среднее:</strong> {{ record.mean }}</div>
+  <div class="detail-row"><strong>Стандартное отклонение:</strong> {{ record.stdDev }}</div>
+  <div class="detail-row"><strong>Уникальные значения:</strong> {{ record.uniqueValues }}</div>
 </div>
 
 <ng-template #noRecord>
-  <p>Выберите запись для отображения деталей</p>
+  <p>Выберите файл для отображения деталей</p>
 </ng-template>

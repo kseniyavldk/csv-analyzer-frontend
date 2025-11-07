@@ -1,65 +1,69 @@
 <div class="history-container">
   <h2>История загрузок</h2>
 
-  <div *ngIf="loading" class="spinner-container">
-    <mat-spinner diameter="40"></mat-spinner>
-  </div>
-
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-
-  <div *ngIf="!loading && dataSource.length > 0">
-    <table mat-table [dataSource]="pagedData" class="mat-elevation-z8">
-
-     <ng-container matColumnDef="fileName">
-  <th mat-header-cell *matHeaderCellDef>Файл</th>
-  <td mat-cell *matCellDef="let item" (click)="openDetails(item)" style="cursor:pointer">
-    {{ item.fileName }}
-  </td>
-</ng-container>
-
-<ng-container matColumnDef="fileSize">
-  <th mat-header-cell *matHeaderCellDef>Размер</th>
-  <td mat-cell *matCellDef="let item">{{ item.fileSize }}</td>
-</ng-container>
-
-<ng-container matColumnDef="processedAt">
-  <th mat-header-cell *matHeaderCellDef>Дата</th>
-  <td mat-cell *matCellDef="let item">{{ item.processedAt | date:'dd.MM.yyyy HH:mm' }}</td>
-</ng-container>
-
-<ng-container matColumnDef="mean">
-  <th mat-header-cell *matHeaderCellDef>Среднее</th>
-  <td mat-cell *matCellDef="let item">{{ item.mean }}</td>
-</ng-container>
-
-<ng-container matColumnDef="stdDev">
-  <th mat-header-cell *matHeaderCellDef>Стандартное отклонение</th>
-  <td mat-cell *matCellDef="let item">{{ item.stdDev }}</td>
-</ng-container>
-
-<ng-container matColumnDef="actions">
-  <th mat-header-cell *matHeaderCellDef>Действия</th>
-  <td mat-cell *matCellDef="let item">
-    <button mat-icon-button color="warn" matTooltip="Удалить" (click)="deleteFile(item.id)">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </td>
-</ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
-    </table>
-
-    <div class="paginator">
-      <button (click)="prevPage()" [disabled]="currentPage===0">◀ Назад</button>
-      <span>Страница {{ currentPage + 1 }} из {{ totalPages }}</span>
-      <button (click)="nextPage()" [disabled]="currentPage>=totalPages-1">Вперед ▶</button>
+  <div *ngIf="loading()">
+    <div class="spinner-container">
+      <mat-spinner diameter="40"></mat-spinner>
     </div>
   </div>
 
-  <p *ngIf="!loading && dataSource.length===0" class="empty">Нет загруженных файлов</p>
+  <div *ngIf="error()">
+    <div class="error">{{ error() }}</div>
+  </div>
+
+  <div *ngIf="files().length > 0 && !loading()">
+    <table mat-table [dataSource]="pagedData()" class="mat-elevation-z8">
+      <!-- fileName -->
+      <ng-container matColumnDef="fileName">
+        <th mat-header-cell *matHeaderCellDef>Файл</th>
+        <td mat-cell *matCellDef="let item" (click)="openDetails(item)" style="cursor:pointer">{{ item.fileName }}</td>
+      </ng-container>
+
+      <!-- fileSize -->
+      <ng-container matColumnDef="fileSize">
+        <th mat-header-cell *matHeaderCellDef>Размер</th>
+        <td mat-cell *matCellDef="let item">{{ item.fileSize }}</td>
+      </ng-container>
+
+      <!-- processedAt -->
+      <ng-container matColumnDef="processedAt">
+        <th mat-header-cell *matHeaderCellDef>Дата</th>
+        <td mat-cell *matCellDef="let item">{{ item.processedAt | date:'dd.MM.yyyy HH:mm' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="mean">
+        <th mat-header-cell *matHeaderCellDef>Среднее</th>
+        <td mat-cell *matCellDef="let item">{{ item.mean }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="stdDev">
+        <th mat-header-cell *matHeaderCellDef>Стандартное отклонение</th>
+        <td mat-cell *matCellDef="let item">{{ item.stdDev }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Действия</th>
+        <td mat-cell *matCellDef="let item">
+          <button mat-icon-button color="warn" matTooltip="Удалить" (click)="deleteFile(item.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <div class="paginator">
+      <button mat-stroked-button color="primary" (click)="prevPage()" [disabled]="currentPage() === 0">◀ Назад</button>
+      <span class="page-info">Страница <strong>{{ currentPage() + 1 }}</strong> из <strong>{{ totalPages() }}</strong></span>
+      <button mat-stroked-button color="primary" (click)="nextPage()" [disabled]="currentPage() >= totalPages() -1">Вперед ▶</button>
+    </div>
+  </div>
+
+  <div *ngIf="files().length === 0 && !loading()">
+    <p class="empty">Нет загруженных файлов</p>
+  </div>
 </div>
 
-<!-- Детали записи -->
-<app-upload-detail [record]="selectedRecord"></app-upload-detail>
+<app-upload-detail></app-upload-detail>

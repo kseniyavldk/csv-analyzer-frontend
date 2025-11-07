@@ -1,14 +1,17 @@
-import { mergeApplicationConfig, ApplicationConfig } from '@angular/core';
-import { provideServerRendering, withRoutes } from '@angular/ssr';
-import { appConfig } from './app.config';
-import { serverRoutes } from './app.routes.server';
+import { ApplicationConfig } from '@angular/core';
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { provideRouter } from '@angular/router';   
+import { routes } from './app.routes';            
+import { filesReducer } from './store/files.reducer';
+import { FilesEffects } from './store/files.effects';
 
-const serverConfig: ApplicationConfig = {
+export const serverConfig: ApplicationConfig = {
   providers: [
-    provideServerRendering(
-      withRoutes(serverRoutes)
-    )
+    provideRouter(routes),                        
+    provideHttpClient(withFetch()),
+    provideStore({ files: filesReducer }),
+    provideEffects([FilesEffects])
   ]
 };
-
-export const config = mergeApplicationConfig(appConfig, serverConfig);
