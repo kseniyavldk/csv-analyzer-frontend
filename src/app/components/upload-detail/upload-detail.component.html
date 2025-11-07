@@ -1,16 +1,19 @@
-<div class="upload-detail" *ngIf="record$ | async as record; else noRecord">
-  <h2>Детали файла: {{ record.fileName }}</h2>
-  <div class="detail-row"><strong>Размер:</strong> {{ record.fileSize }} байт</div>
-  <div class="detail-row"><strong>Дата анализа:</strong> {{ record.processedAt | date:'dd.MM.yyyy HH:mm' }}</div>
-  <div class="detail-row"><strong>Всего строк:</strong> {{ record.totalLines }}</div>
-  <div class="detail-row"><strong>Ошибочных:</strong> {{ record.invalidLines }}</div>
-  <div class="detail-row"><strong>Минимум:</strong> {{ record.min }}</div>
-  <div class="detail-row"><strong>Максимум:</strong> {{ record.max }}</div>
-  <div class="detail-row"><strong>Среднее:</strong> {{ record.mean }}</div>
-  <div class="detail-row"><strong>Стандартное отклонение:</strong> {{ record.stdDev }}</div>
-  <div class="detail-row"><strong>Уникальные значения:</strong> {{ record.uniqueValues }}</div>
-</div>
+<div *ngIf="record" class="details-container">
+  <h3>Детали файла: {{ record.fileName }}</h3>
+  <p>Размер: {{ record.fileSize }} bytes</p>
+  <p>Обработано: {{ record.processedAt | date:'short' }}</p>
+  <p>Всего строк: {{ record.totalLines }}</p>
+  <p>Неверные строки: {{ record.invalidLines }}</p>
+  <p>Минимум: {{ record.min }}</p>
+  <p>Максимум: {{ record.max }}</p>
+  <p>Среднее: {{ record.mean | number:'1.2-2' }}</p>
+  <p>Стандартное отклонение: {{ record.stdDev | number:'1.2-2' }}</p>
+  <p>Уникальные значения: {{ record.uniqueValues }}</p>
 
-<ng-template #noRecord>
-  <p>Выберите файл для отображения деталей</p>
-</ng-template>
+  <div *ngIf="record.invalidLinesDetails?.length">
+    <h4>Некорректные строки</h4>
+    <ul>
+      <li *ngFor="let line of record.invalidLinesDetails">{{ line }}</li>
+    </ul>
+  </div>
+</div>

@@ -1,38 +1,32 @@
 <div class="upload-container">
-  <h2>Загрузка CSV файла</h2>
+  <div class="upload-form">
+  <h2>Загрузить CSV</h2>
+  <input type="file" (change)="onFileSelected($event)" accept=".csv" />
+  <button mat-raised-button color="primary" (click)="upload()" [disabled]="!selectedFile">Загрузить</button>
+</div>
 
-  <input type="file" (change)="onFileSelected($event)" />
-  <button (click)="upload()" [disabled]="!selectedFile">Загрузить CSV</button>
 
-  @if (errorMessage) {
-    <div class="error-message">
-      {{ errorMessage }}
-    </div>
-  }
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
 
-  @if (stats) {
-    <div class="stats-container">
-      <h3>Статистика файла</h3>
+  <div *ngIf="stats" class="stats-container">
+    <h3>Статистика файла</h3>
+    <ul>
+      <li><strong>Всего строк:</strong> {{ stats.totalLines }}</li>
+      <li><strong>Неверные строки:</strong> {{ stats.invalidLines }}</li>
+      <li><strong>Минимум:</strong> {{ stats.min }}</li>
+      <li><strong>Максимум:</strong> {{ stats.max }}</li>
+      <li><strong>Среднее:</strong> {{ stats.mean | number:'1.2-2' }}</li>
+      <li><strong>Стандартное отклонение:</strong> {{ stats.stdDev | number:'1.2-2' }}</li>
+      <li><strong>Уникальные значения:</strong> {{ stats.uniqueValues }}</li>
+    </ul>
+
+    <div *ngIf="stats.invalidLinesDetails?.length" class="invalid-lines">
+      <h4>Детали неверных строк</h4>
       <ul>
-        <li><strong>Всего строк:</strong> {{ stats.totalLines }}</li>
-        <li><strong>Неверные строки:</strong> {{ stats.invalidLines }}</li>
-        <li><strong>Минимум:</strong> {{ stats.min }}</li>
-        <li><strong>Максимум:</strong> {{ stats.max }}</li>
-        <li><strong>Среднее:</strong> {{ stats.mean | number:'1.2-2' }}</li>
-        <li><strong>Стандартное отклонение:</strong> {{ stats.stdDev | number:'1.2-2' }}</li>
-        <li><strong>Уникальные значения:</strong> {{ stats.uniqueValues }}</li>
+        <li *ngFor="let line of stats.invalidLinesDetails">{{ line }}</li>
       </ul>
-
-      @if (stats.invalidLinesDetails?.length) {
-        <div class="invalid-lines">
-          <h4>Детали неверных строк</h4>
-          <ul>
-            @for (line of stats.invalidLinesDetails; track $index) {
-              <li>{{ line }}</li>
-            }
-          </ul>
-        </div>
-      }
     </div>
-  }
+  </div>
 </div>

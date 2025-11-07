@@ -10,4 +10,6 @@ export interface CsvAnalysisRecord {
   mean: number;
   stdDev: number;
   uniqueValues: number;
+
+  invalidLinesDetails?: string[]; 
 }

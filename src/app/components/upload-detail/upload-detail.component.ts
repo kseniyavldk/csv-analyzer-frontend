@@ -1,8 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { selectCurrentFile } from '../../store/files.selectors';
 import { CsvAnalysisRecord } from '../../models/csv-analysis-record.model';
 
 @Component({
@@ -13,9 +10,5 @@ import { CsvAnalysisRecord } from '../../models/csv-analysis-record.model';
   styleUrls: ['./upload-detail.component.scss']
 })
 export class UploadDetailComponent {
-  record$: Observable<CsvAnalysisRecord | null>;
-
-  constructor(private store: Store) {
-    this.record$ = this.store.select(selectCurrentFile);
-  }
+  @Input() record: CsvAnalysisRecord | null = null;
 }
