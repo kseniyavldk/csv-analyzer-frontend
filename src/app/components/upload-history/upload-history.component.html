@@ -1,29 +1,40 @@
 <div class="history-container">
   <h2>История загрузок</h2>
-<div class="filters">
-  <button mat-stroked-button (click)="sortBy.set('date')">Сортировать по дате</button>
-  <button mat-stroked-button (click)="sortBy.set('size')">Сортировать по размеру</button>
-  <button mat-stroked-button (click)="sortDirection.set(sortDirection() === 'asc' ? 'desc' : 'asc')">
-    Направление: {{ sortDirection() }}
-  </button>
-  <mat-checkbox [(ngModel)]="filterErrors">Показывать только с ошибками</mat-checkbox>
-</div>
 
-  <div *ngIf="loading()">
+  <div class="filters">
+    <button mat-stroked-button (click)="sortBy.set('date')">Сортировать по дате</button>
+    <button mat-stroked-button (click)="sortBy.set('size')">Сортировать по размеру</button>
+    <button
+      mat-stroked-button
+      (click)="sortDirection.set(sortDirection() === 'asc' ? 'desc' : 'asc')"
+    >
+      Направление: {{ sortDirection() }}
+    </button>
+    <mat-checkbox [(ngModel)]="filterErrors">Показывать только с ошибками</mat-checkbox>
+  </div>
+
+  @if (loading()) {
     <div class="spinner-container">
       <mat-spinner diameter="40"></mat-spinner>
     </div>
-  </div>
+  }
 
-  <div *ngIf="error()">
+  @if (error()) {
     <div class="error">{{ error() }}</div>
-  </div>
+  }
 
-  <div *ngIf="pagedData().length > 0 && !loading()">
+  @if (pagedData().length > 0 && !loading()) {
     <table mat-table [dataSource]="pagedData()" class="mat-elevation-z8">
       <ng-container matColumnDef="fileName">
         <th mat-header-cell *matHeaderCellDef>Файл</th>
-        <td mat-cell *matCellDef="let item" (click)="openDetails(item)" style="cursor:pointer">{{ item.fileName }}</td>
+        <td
+          mat-cell
+          *matCellDef="let item"
+          (click)="openDetails(item)"
+          style="cursor:pointer"
+        >
+          {{ item.fileName }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="fileSize">
@@ -33,7 +44,9 @@
 
       <ng-container matColumnDef="processedAt">
         <th mat-header-cell *matHeaderCellDef>Дата</th>
-        <td mat-cell *matCellDef="let item">{{ item.processedAt | date:'dd.MM.yyyy HH:mm' }}</td>
+        <td mat-cell *matCellDef="let item">
+          {{ item.processedAt | date: 'dd.MM.yyyy HH:mm' }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="mean">
@@ -49,7 +62,12 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Действия</th>
         <td mat-cell *matCellDef="let item">
-          <button mat-icon-button color="warn" matTooltip="Удалить" (click)="deleteFile(item.id)">
+          <button
+            mat-icon-button
+            color="warn"
+            matTooltip="Удалить"
+            (click)="deleteFile(item.id)"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </td>
@@ -60,15 +78,32 @@
     </table>
 
     <div class="paginator">
-      <button mat-stroked-button color="primary" (click)="prevPage()" [disabled]="currentPage() === 0">◀ Назад</button>
-      <span class="page-info">Страница <strong>{{ currentPage() + 1 }}</strong> из <strong>{{ totalPages() }}</strong></span>
-      <button mat-stroked-button color="primary" (click)="nextPage()" [disabled]="currentPage() >= totalPages() -1">Вперед ▶</button>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="prevPage()"
+        [disabled]="currentPage() === 0"
+      >
+        ◀ Назад
+      </button>
+      <span class="page-info">
+        Страница <strong>{{ currentPage() + 1 }}</strong> из
+        <strong>{{ totalPages() }}</strong>
+      </span>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="nextPage()"
+        [disabled]="currentPage() >= totalPages() - 1"
+      >
+        Вперед ▶
+      </button>
     </div>
-  </div>
+  }
 
-  <div *ngIf="pagedData().length === 0 && !loading()">
+  @if (pagedData().length === 0 && !loading()) {
     <p class="empty">Нет загруженных файлов</p>
-  </div>
+  }
 
   <app-upload-detail [record]="selectedRecord()"></app-upload-detail>
 </div>

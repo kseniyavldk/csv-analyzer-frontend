@@ -1,32 +1,46 @@
 <div class="upload-container">
   <div class="upload-form">
-  <h2>Загрузить CSV</h2>
-  <input type="file" (change)="onFileSelected($event)" accept=".csv" />
-  <button mat-raised-button color="primary" (click)="upload()" [disabled]="!selectedFile">Загрузить</button>
-</div>
-
-
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
+    <h2>Загрузить CSV</h2>
+    <input type="file" (change)="onFileSelected($event)" accept=".csv" />
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="upload()"
+      [disabled]="!selectedFile"
+    >
+      Загрузить
+    </button>
   </div>
 
-  <div *ngIf="stats" class="stats-container">
-    <h3>Статистика файла</h3>
-    <ul>
-      <li><strong>Всего строк:</strong> {{ stats.totalLines }}</li>
-      <li><strong>Неверные строки:</strong> {{ stats.invalidLines }}</li>
-      <li><strong>Минимум:</strong> {{ stats.min }}</li>
-      <li><strong>Максимум:</strong> {{ stats.max }}</li>
-      <li><strong>Среднее:</strong> {{ stats.mean | number:'1.2-2' }}</li>
-      <li><strong>Стандартное отклонение:</strong> {{ stats.stdDev | number:'1.2-2' }}</li>
-      <li><strong>Уникальные значения:</strong> {{ stats.uniqueValues }}</li>
-    </ul>
-
-    <div *ngIf="stats.invalidLinesDetails?.length" class="invalid-lines">
-      <h4>Детали неверных строк</h4>
-      <ul>
-        <li *ngFor="let line of stats.invalidLinesDetails">{{ line }}</li>
-      </ul>
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
     </div>
-  </div>
+  }
+
+  @if (stats) {
+    <div class="stats-container">
+      <h3>Статистика файла</h3>
+      <ul>
+        <li><strong>Всего строк:</strong> {{ stats.totalLines }}</li>
+        <li><strong>Неверные строки:</strong> {{ stats.invalidLines }}</li>
+        <li><strong>Минимум:</strong> {{ stats.min }}</li>
+        <li><strong>Максимум:</strong> {{ stats.max }}</li>
+        <li><strong>Среднее:</strong> {{ stats.mean | number:'1.2-2' }}</li>
+        <li><strong>Стандартное отклонение:</strong> {{ stats.stdDev | number:'1.2-2' }}</li>
+        <li><strong>Уникальные значения:</strong> {{ stats.uniqueValues }}</li>
+      </ul>
+
+      @if (stats.invalidLinesDetails?.length) {
+        <div class="invalid-lines">
+          <h4>Детали неверных строк</h4>
+          <ul>
+            @for (line of stats.invalidLinesDetails; track line) {
+              <li>{{ line }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  }
 </div>

@@ -1,19 +1,32 @@
-<div *ngIf="record" class="details-container">
-  <h3>Детали файла: {{ record.fileName }}</h3>
-  <p>Размер: {{ record.fileSize }} bytes</p>
-  <p>Обработано: {{ record.processedAt | date:'short' }}</p>
-  <p>Всего строк: {{ record.totalLines }}</p>
-  <p>Неверные строки: {{ record.invalidLines }}</p>
-  <p>Минимум: {{ record.min }}</p>
-  <p>Максимум: {{ record.max }}</p>
-  <p>Среднее: {{ record.mean | number:'1.2-2' }}</p>
-  <p>Стандартное отклонение: {{ record.stdDev | number:'1.2-2' }}</p>
-  <p>Уникальные значения: {{ record.uniqueValues }}</p>
+@if (record) {
+  <div>
+    <h2>File Details</h2>
+    <p><strong>File name:</strong> {{ record.fileName }}</p>
+    <p><strong>Size:</strong> {{ record.fileSize | number }} bytes</p>
+    <p><strong>Processed at:</strong> {{ record.processedAt | date:'medium' }}</p>
 
-  <div *ngIf="record.invalidLinesDetails?.length">
-    <h4>Некорректные строки</h4>
+    <mat-divider></mat-divider>
+
+    <h3>Statistics</h3>
     <ul>
-      <li *ngFor="let line of record.invalidLinesDetails">{{ line }}</li>
+      <li><strong>Total lines:</strong> {{ record.totalLines }}</li>
+      <li><strong>Invalid lines:</strong> {{ record.invalidLines }}</li>
+      <li><strong>Unique values:</strong> {{ record.uniqueValues }}</li>
+      <li><strong>Min:</strong> {{ record.min }}</li>
+      <li><strong>Max:</strong> {{ record.max }}</li>
+      <li><strong>Mean:</strong> {{ record.mean | number:'1.2-2' }}</li>
+      <li><strong>Std Dev:</strong> {{ record.stdDev | number:'1.2-2' }}</li>
     </ul>
+
+    <mat-divider></mat-divider>
+
+    @if (record.invalidLinesDetails?.length) {
+      <h3>Invalid Lines</h3>
+      <ul>
+        @for (err of record.invalidLinesDetails; track err) {
+          <li>{{ err }}</li>
+        }
+      </ul>
+    }
   </div>
-</div>
+}
